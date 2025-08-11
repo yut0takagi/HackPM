@@ -1,0 +1,79 @@
+keel/
+├─ apps/
+│  ├─ web/                     # エンドユーザー向け React (Vite + TS + Tailwind)
+│  │  ├─ src/
+│  │  │  ├─ pages/             # Projects / DocEditor / Gantt / MockBoard / Settings
+│  │  │  ├─ components/
+│  │  │  ├─ features/          # documents/ tasks/ mocks/ search/ auth など機能単位
+│  │  │  ├─ store/             # Zustand
+│  │  │  ├─ hooks/ utils/ lib/ # api.ts(OpenAPI client), ws.ts, auth.ts
+│  │  │  └─ styles/
+│  │  ├─ public/
+│  │  └─ vite.config.ts
+│  │
+│  ├─ admin/                   # 管理者コンソール React（React-Admin or Next.jsでも可）
+│  │  ├─ src/
+│  │  │  ├─ pages/             # Dashboard / Users / Workspaces / Projects / Audit / Queues
+│  │  │  ├─ resources/         # react-admin の Resource 定義（CRUD, filters, actions）
+│  │  │  ├─ components/        # RBACバッジ, Impersonate, 禁止操作の確認ダイアログ
+│  │  │  ├─ lib/               # admin-api.ts, charts, table, exporter
+│  │  │  └─ store/             # 管理者の権限/スコープ
+│  │  ├─ public/
+│  │  └─ vite.config.ts
+│  │
+│  └─ docs/                    # 開発者ドキュメント（Docusaurus/MkDocs）
+│     ├─ architecture/
+│     ├─ api/                  # OpenAPI参照、API使用例
+│     └─ runbooks/             # 障害対応手順, 権限設計, データ保持方針
+│
+├─ services/
+│  ├─ api/                     # FastAPI 本体
+│  │  ├─ app/
+│  │  │  ├─ main.py
+│  │  │  ├─ core/              # settings, logging, security, deps
+│  │  │  ├─ auth/              # OIDC, JWT, RBAC, scopes
+│  │  │  ├─ models/            # SQLAlchemy モデル（Users, Projects, Documents…）
+│  │  │  ├─ schemas/           # Pydantic
+│  │  │  ├─ routes/            # REST: documents, tasks, mocks, search, admin/*
+│  │  │  ├─ ws/                # Yjsブリッジ WebSocket（docs/*, mocks/*）
+│  │  │  ├─ services/          # domain層（approvals, rag, notifications, gantt）
+│  │  │  ├─ repo/              # DBアクセス（クエリ最適化を集約）
+│  │  │  ├─ workers/           # Arq/RQ/Celery ジョブ定義（embeddings, llm, sync）
+│  │  │  ├─ migrations/        # Alembic（ER図のDDLをここに）
+│  │  │  └─ tests/             # pytest（api, repo, services）
+│  │  └─ openapi.json          # CIで自動生成 → web/admin へクライアント配布
+│  │
+│  ├─ llm/                     # gpt-oss サービス（vLLM / llama.cpp server）
+│  │  ├─ server/               # 起動スクリプト, healthcheck, batching 設定
+│  │  └─ prompts/              # JSON Schema契約, システム/テンプレ
+│  │
+│  └─ ingestion/               # 取り込みパイプライン（PDF→テキスト, OCR, embeddings）
+│     ├─ workers/
+│     └─ tests/
+│
+├─ packages/                   # 共有ライブラリ（Web/Admin/API から再利用）
+│  ├─ ts-sdk/                  # OpenAPI 生成 TypeScript SDK（web と admin で共通）
+│  ├─ ui/                      # 共通UI（ボタン/モーダル/トースト/shadcn拡張）
+│  ├─ eslint-config/ tsconfig/ # Lint/型設定共有
+│  └─ schemas/                 # zod/JSON Schema（LLM出力検証, import/export 仕様）
+│
+├─ infra/
+│  ├─ dev/                     # docker-compose 環境（pg, redis, minio, api, web, admin, vllm）
+│  │  └─ docker-compose.yml
+│  ├─ k8s/                     # 本番 (Helm/Manifests: api, ws, workers, vllm, ingress, hpa)
+│  ├─ terraform/               # VPC, RDS(Postgres), ElastiCache/MemoryDB, S3, IAM, CDN 等
+│  └─ scripts/                 # db:seed, backup/restore, log-collector
+│
+├─ .github/
+│  ├─ workflows/
+│  │  ├─ ci.yml                # lint/test/typecheck
+│  │  ├─ api-docker.yml        # API コンテナ build & push
+│  │  ├─ web-admin-deploy.yml  # web/admin のビルド & デプロイ（環境別）
+│  │  └─ openapi-generate.yml  # API変更で ts-sdk を自動再生成＆publish
+│
+├─ Makefile                    # よく使うコマンドの短縮（下に例あり）
+├─ pnpm-workspace.yaml         # モノレポ（pnpm推奨；npm/yarnでもOK）
+├─ package.json
+├─ pyproject.toml              # API/Workers 用（poetry or uvでもOK）
+├─ .env.example                # 主要ENV見本
+└─ README.md
