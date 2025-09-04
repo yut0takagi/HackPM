@@ -1,0 +1,154 @@
+:root {
+  --bg: #0b0c10;
+  --surface: #111218;
+  --panel: #1a1b22;
+  --text: #e6e6e6;
+  --text-muted: #a0a0a0;
+  --border: #2a2b31;
+  --accent: #6e9cff;
+  --danger: #ff5c5c;
+  --ok: #36c55f;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+.app-shell.collapsed { grid-template-columns: 56px 1fr; }
+.sidebar {
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.brand {
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.2px;
+  display: flex; align-items: center; gap: 8px;
+}
+.brand .icon { border: 1px solid var(--border); background: var(--surface); border-radius: 8px; padding: 4px 8px; }
+.brand-text { white-space: nowrap; }
+.sidebar nav {
+  display: grid;
+  gap: 8px;
+}
+.sidebar a {
+  color: var(--text);
+  padding: 8px 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  display: flex; align-items: center; gap: 10px;
+}
+.sidebar a.active {
+  background: #2a2d3a;
+  color: #fff;
+}
+.sidebar .icon { width: 20px; text-align: center; }
+.app-shell.collapsed .sidebar .label, .app-shell.collapsed .brand-text { display: none; }
+.app-shell.collapsed .sidebar nav a { justify-content: center; }
+.content {
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.page h1 { margin: 0 0 16px; }
+
+.row { display: flex; align-items: center; gap: 8px; }
+.row.gap { gap: 12px; }
+.row.small { gap: 6px; }
+.row.space-between { justify-content: space-between; }
+.row.wrap { flex-wrap: wrap; }
+.grow { flex: 1; }
+.divider { width: 1px; height: 24px; background: var(--border); }
+
+input, textarea, select {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+textarea { width: 100%; }
+
+button {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+button:hover { border-color: var(--accent); }
+button.link { border: none; background: transparent; color: var(--accent); padding: 4px; }
+button.danger { border-color: var(--danger); color: var(--danger); }
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.card.light { background: var(--surface); }
+
+.list { display: grid; gap: 12px; }
+.tag { background: #2a2d3a; color: #cbd3ff; padding: 2px 8px; border-radius: 999px; font-size: 12px; }
+.badge { padding: 2px 8px; border-radius: 8px; font-size: 12px; border: 1px solid var(--border) }
+.badge.p0 { background: #3b2340; color: #ffd3ff; }
+.badge.p1 { background: #243340; color: #d6e9ff; }
+.badge.p2 { background: #1b3d31; color: #d4ffe9; }
+.muted { color: var(--text-muted); }
+
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tile { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
+.tile-title { color: var(--text-muted); font-size: 12px; }
+.tile-value { font-size: 22px; font-weight: 700; }
+
+/* Gantt */
+.content { --gantt-title-w: 240px; --gantt-row-h: 56px; }
+.gantt { overflow-x: auto; position: relative; }
+.gantt-header { display: grid; align-items: center; position: sticky; top: 0; background: var(--bg); z-index: 1; }
+.gantt-colhead { padding: 8px; border-bottom: 1px solid var(--border); color: var(--text-muted); }
+.gantt-colhead.small { font-size: 11px; text-align: center; }
+.gantt-header > .gantt-colhead:first-child { position: sticky; left: 0; z-index: 3; background: var(--bg); box-shadow: 2px 0 0 0 var(--border); }
+.gantt-body { display: grid; gap: 6px; padding-top: 6px; }
+.gantt-row { display: grid; align-items: stretch; }
+.gantt-tasktitle { padding: 8px; border-right: 1px solid var(--border); min-height: var(--gantt-row-h); display: flex; flex-direction: column; justify-content: center; position: sticky; left: 0; z-index: 2; background: var(--bg); box-shadow: 2px 0 0 0 var(--border); }
+.gantt-tasktitle .row.small { flex-wrap: wrap; gap: 8px; }
+.gantt-tasktitle .row.small label { min-width: 36px; color: var(--text-muted); }
+.gantt-tasktitle input[type="date"] { width: 130px; }
+.gantt-tasktitle input[type="number"] { width: 72px; }
+.gantt-cells { display: grid; align-items: center; gap: 0; height: var(--gantt-row-h); }
+.gantt-bar { height: 20px; background: #2a3e6b; border-radius: 10px; border: 1px solid #3c5a9e; position: relative; align-self: center; margin: 0 1px; }
+.gantt-progress { position: absolute; left: 0; top: 0; bottom: 0; background: var(--ok); border-radius: 10px 0 0 10px; }
+.gantt-bar { cursor: grab; }
+.gantt-bar.dragging { opacity: 0.8; cursor: grabbing; }
+.gantt-handle { position: absolute; top: -4px; bottom: -4px; width: 8px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 6px; cursor: ew-resize; }
+.gantt-handle.left { left: -4px; }
+.gantt-handle.right { right: -4px; }
+/* Now line */
+.gantt-now, .gantt-now-header { pointer-events: none; }
+.gantt-now { border-left: 2px solid #ff6b6b; height: 100%; }
+.gantt-now-header { border-left: 2px solid #ff6b6b; height: 100%; }
+
+/* Modal */
+.modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: grid; place-items: center; z-index: 50; }
+.modal { background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 12px; width: min(640px, 92vw); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+.modal-header { padding: 16px 20px; border-bottom: 1px solid var(--border); }
+.modal-body { padding: 16px 20px; display: grid; gap: 12px; }
+.modal-footer { padding: 12px 20px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 8px; }
+
+table.attrs { width: 100%; border-collapse: collapse; }
+table.attrs th, table.attrs td { border-bottom: 1px solid var(--border); padding: 6px 8px; text-align: left; }
