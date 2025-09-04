@@ -1,4 +1,4 @@
-import { Routes, Route, NavLink } from 'react-router-dom'
+import { Routes, Route, NavLink, useLocation } from 'react-router-dom'
 import './App.css'
 import { AppStateProvider } from './state/store'
 import HomePage from './pages/HomePage'
@@ -9,6 +9,7 @@ import PromptBuilderPage from './pages/PromptBuilderPage'
 import SettingsPage from './pages/SettingsPage'
 import GitPage from './pages/GitPage'
 import { useState } from 'react'
+import LandingPage from './pages/LandingPage'
 
 function App() {
   const [collapsed, setCollapsed] = useState<boolean>(() => {
@@ -17,6 +18,14 @@ function App() {
   const toggle = () => {
     const v = !collapsed; setCollapsed(v)
     try { localStorage.setItem('hackpm_sidebar_collapsed', v ? '1' : '0') } catch {}
+  }
+  const loc = useLocation()
+  if (loc.pathname.startsWith('/lp')) {
+    return (
+      <AppStateProvider>
+        <LandingPage />
+      </AppStateProvider>
+    )
   }
   return (
     <AppStateProvider>
