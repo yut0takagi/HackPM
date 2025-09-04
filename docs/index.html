@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hack PM — Hackathon Project Template</title>
+    <meta name="description" content="ハッカソンで最短デモまで。要件→ガント→ER→AI→Git→LPをワンストップで。" />
+    <link rel="icon" href="./assets/logo.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+    <script defer src="./app.js"></script>
+  </head>
+  <body>
+    <div class="lp">
+      <section class="lp-hero">
+        <div class="lp-bg">
+          <div class="lp-blob a"></div>
+          <div class="lp-blob b"></div>
+          <div class="lp-blob c"></div>
+          <div class="lp-grid"></div>
+        </div>
+        <header class="lp-nav">
+          <div class="logo"><img src="./assets/logo.svg" alt="Hack PM" /></div>
+          <nav>
+            <a href="#features">Features</a>
+            <a href="#stack">Stack</a>
+            <a href="#flow">Flow</a>
+            <a href="../hack-pm/" target="_blank" rel="noopener">Open App</a>
+          </nav>
+        </header>
+        <div class="lp-hero-inner">
+          <h1 class="headline">
+            <span class="word">Hackathon</span>
+            <span class="word">Project</span>
+            <span class="word">Template</span>
+          </h1>
+          <p class="tagline">要件・ガント（日/時間）・ER・AI・Git・LP、全部このテンプレで。</p>
+          <div class="cta">
+            <a class="btn primary" href="../hack-pm/" target="_blank" rel="noopener">Open the App</a>
+            <a class="btn ghost" href="https://github.com/" target="_blank" rel="noopener">Use this template</a>
+          </div>
+          <div class="hero-card">
+            <div class="glow"></div>
+            <div class="hero-stats">
+              <div><span class="kpi">Day/Hour</span><span class="label">Gantt with Drag</span></div>
+              <div><span class="kpi">Mermaid</span><span class="label">ER Live Preview</span></div>
+              <div><span class="kpi">AI</span><span class="label">Prompt-powered</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="lp-section lp-features">
+        <h2>Features</h2>
+        <p class="lead">ハッカソンの基本動線を、最短で。</p>
+        <div class="feature-grid">
+          <div class="lp-feature glass"><div class="icon">📋</div><h3>Requirements</h3><p>優先度・進捗・ストーリーを軽量に管理。</p></div>
+          <div class="lp-feature glass"><div class="icon">📆</div><h3>Gantt</h3><p>日/時間スケール。業務時間設定。バーをドラッグ/リサイズ。</p></div>
+          <div class="lp-feature glass"><div class="icon">🧩</div><h3>ERD</h3><p>Mermaidで即プレビュー。定義と可視化を一体化。</p></div>
+          <div class="lp-feature glass"><div class="icon">✨</div><h3>AI</h3><p>要件/タスク/ERの自動生成でPoCを加速。</p></div>
+          <div class="lp-feature glass"><div class="icon">🔀</div><h3>Git</h3><p>ブランチ/コミット/Push/Fetch、WSプレゼンス。</p></div>
+          <div class="lp-feature glass"><div class="icon">⚡</div><h3>Local-first</h3><p>localStorage 自動保存。即起動してそのまま使える。</p></div>
+        </div>
+      </section>
+
+      <section id="stack" class="lp-section lp-stack">
+        <h2>Minimal Stack, Maximum Flow</h2>
+        <div class="stack-grid">
+          <div class="stack-tile glass"><span class="chip">React</span><span class="chip sub">Vite</span></div>
+          <div class="stack-tile glass"><span class="chip">TypeScript</span></div>
+          <div class="stack-tile glass"><span class="chip">GSAP</span><span class="chip sub">ScrollTrigger</span></div>
+          <div class="stack-tile glass"><span class="chip">Mermaid</span></div>
+          <div class="stack-tile glass"><span class="chip">Express</span><span class="chip sub">simple-git</span></div>
+          <div class="stack-tile glass"><span class="chip">Local-first</span></div>
+        </div>
+      </section>
+
+      <section id="flow" class="lp-section lp-timeline">
+        <h2>Hackathon Flow</h2>
+        <div class="timeline">
+          <div class="row"><span>1</span><p>プロジェクト設定・目的整理</p></div>
+          <div class="row"><span>2</span><p>機能を絞り込み、要件に落とす</p></div>
+          <div class="row"><span>3</span><p>ガント/ERのたたきを作る</p></div>
+          <div class="row"><span>4</span><p>AIでPoC素案→実装へ</p></div>
+          <div class="row"><span>5</span><p>デモ準備/発表</p></div>
+        </div>
+      </section>
+
+      <footer class="lp-footer">
+        <div>© Hack PM Template</div>
+        <a href="../hack-pm/" target="_blank" rel="noopener">Open App</a>
+      </footer>
+    </div>
+  </body>
+  </html>
+

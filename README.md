@@ -35,6 +35,14 @@ npm run dev:all   # アプリ + Git APIサーバを同時起動
 - LP: http://localhost:5173/lp
 - Git API（ローカル）: http://localhost:8787
 
+GitHub Pages でLPを公開する
+
+1) GitHubの対象リポジトリ → Settings → Pages
+2) Source を「Deploy from a branch」/ Branch を「main」/ フォルダを「/docs」へ設定 → Save
+3) 数分待つと `https://<your-account>.github.io/<repo>/` で公開されます
+
+LPの編集は `docs/` 配下（`index.html`, `styles.css`, `app.js`）を更新してください。
+
 3) OpenAI 連携（任意）
 
 - 画面右の「設定」→ OpenAI API で `sk-...` を保存
