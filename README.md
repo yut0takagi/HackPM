@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="hack-pm/public/logo.svg" width="360" alt="Hack PM logo"/>
+  <img src="keel/public/logo.svg" width="360" alt="Hack PM logo"/>
 </p>
 
 # Hackathon Project Template — Hack PM
