@@ -4,14 +4,34 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    environment:
-      - REACT_APP_API_URL=http://localhost:8080
-      - REACT_APP_PYTHON_API_URL=http://localhost:8000
+      - "5173:80"
+    depends_on:
+      - backend-python
+    restart: unless-stopped
 
+  backend-python:
+    build:
+      context: ./backend-python
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./backend-python:/app
+      - ./data:/app/data
+    env_file:
+      - .env
+    environment:
+      - PORT=9000
+      - DATABASE_URL=sqlite:///./data/hack_pm.db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  # Optional: Keep Go backend for legacy support
   backend-go:
     build:
       context: ./backend-go
@@ -22,43 +42,15 @@ services:
       - ./backend-go:/app
     environment:
       - PORT=8080
-      - PYTHON_API_URL=http://backend-python:8000
+      - PYTHON_API_URL=http://backend-python:9000
     depends_on:
-      - postgres
+      - backend-python
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "-O", "/dev/null", "http://localhost:8080/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-
-  backend-python:
-    build:
-      context: ./backend-python
-      dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./backend-python:/app
-    environment:
-      - PORT=8000
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-
-  postgres:
-    image: postgres:15
-    environment:
-      POSTGRES_DB: hackpm
-      POSTGRES_USER: hackpm
-      POSTGRES_PASSWORD: hackpm123
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-volumes:
-  postgres_data:
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    profiles:
+      - legacy

@@ -1,47 +1,94 @@
-# Hack PM - ハッカソンプロジェクト管理システム
+# Hack PM - GitHub Integration Hub
 
-Hack PMは、ハッカソンイベントでのプロジェクト管理を効率化するWebアプリケーションです。プロジェクトの作成、管理、そしてKeelテンプレートリポジトリからの自動リポジトリ生成機能を提供します。
+リアルタイムGitHubリポジトリ監視・プロジェクト管理ダッシュボード
+
+Hack PMは、GitHub WebhookとAPIを活用して、指定されたGitリポジトリ群のpush/branch/PR/issue/workflow(CI)をリアルタイムに収集・保存・可視化・通知する軽量ダッシュボードです。
+
+### 主な機能
+
+- 🔄 **リアルタイム監視**: GitHub Webhookによるリアルタイムイベント受信
+- 📊 **美しいダッシュボード**: Appleスタイルの洗練されたUI
+- 🔍 **包括的な追跡**: Push、PR、Issue、CI/CDワークフローの監視
+- 🔔 **Discord通知**: 重要なイベントの自動通知
+- 📈 **統計とレポート**: プロジェクトの進捗状況を可視化
+- 🔒 **セキュア**: Webhook署名検証とリポジトリ許可リスト
 
 ## 🏗️ アーキテクチャ
 
-- **フロントエンド**: React (TypeScript)
-- **バックエンド**: 
-  - Go (Gin) - プロジェクト管理API
-  - Python (FastAPI) - 統計分析・リポジトリ管理API
-- **データベース**: PostgreSQL
+- **フロントエンド**: React + Vite (TypeScript)
+- **バックエンド**: Python (FastAPI) - GitHub統合・Webhook処理
+- **データベース**: SQLite (開発用)
 - **コンテナ化**: Docker & Docker Compose
 
 ## 🚀 クイックスタート
 
 ### 前提条件
 
-- Docker
-- Docker Compose
+- Docker & Docker Compose
+- GitHub Personal Access Token
+- 監視対象リポジトリへのアクセス権限
 
-### 起動方法
+### 1. 環境設定
 
-1. リポジトリをクローン
 ```bash
+# リポジトリをクローン
 git clone <repository-url>
 cd hack-pm
+
+# 環境変数を設定
+cp .env.example .env
+# .envファイルを編集して必要な値を設定
 ```
 
-2. Docker Composeでサービスを起動
+### 2. 環境変数の設定
+
+`.env`ファイルを編集：
+
+```env
+# 必須設定
+HACKPM_PORT=9000
+GITHUB_WEBHOOK_SECRET=your_webhook_secret_here
+GITHUB_TOKEN=ghp_your_personal_access_token_here
+ALLOWED_REPOS=owner1/repo1,owner2/repo2
+
+# オプション設定
+DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/your/webhook/url
+```
+
+### 3. 起動
+
+**プロダクション環境:**
 ```bash
-docker-compose up --build
+# Docker Composeで起動
+docker compose up -d
+
+# ログを確認
+docker compose logs -f
 ```
 
-3. ブラウザでアクセス
-- フロントエンド: http://localhost:3000
-- Go API: http://localhost:8080
-- Python API: http://localhost:8000
+**開発環境:**
+```bash
+# 簡単スタート（推奨）
+./start-dev.sh
 
-### 初回起動時
+# または、Docker Composeで開発環境起動
+docker compose -f docker-compose.dev.yml up -d
 
-初回起動時には、サンプルプロジェクトが自動的に作成されます：
-- AIチャットボット
-- IoTセンサーダッシュボード  
-- ブロックチェーン投票システム
+# または、手動でローカル開発
+cd backend-python
+pip install -r requirements.txt
+uvicorn main:app --reload --port 9000 &
+
+cd ../frontend
+npm install
+npm run dev
+```
+
+### 4. アクセス
+
+- **フロントエンド**: http://localhost:5173
+- **API**: http://localhost:9000
+- **API ドキュメント**: http://localhost:9000/docs
 
 ## 📱 機能
 
