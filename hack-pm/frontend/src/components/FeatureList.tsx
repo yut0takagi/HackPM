@@ -14,7 +14,7 @@ interface Feature {
 }
 
 const FeatureList: React.FC = () => {
-  const [features, setFeatures] = useState<Feature[]>([
+  const [features] = useState<Feature[]>([
     {
       id: 1,
       name: 'ユーザー認証システム',
@@ -53,18 +53,18 @@ const FeatureList: React.FC = () => {
     {
       id: 4,
       name: 'データベース設計',
-      description: 'PostgreSQLデータベースの設計と構築',
+      description: 'PostgreSQLを使用したデータベース設計',
       status: 'todo',
-      priority: 'high',
+      priority: 'critical',
       assignee: '高橋',
-      estimatedHours: 14,
+      estimatedHours: 8,
       startDate: '2024-01-22',
-      endDate: '2024-01-28'
+      endDate: '2024-01-26'
     },
     {
       id: 5,
       name: 'フロントエンド実装',
-      description: 'React TypeScriptでのUI実装',
+      description: 'Reactを使用したUI実装',
       status: 'in-progress',
       priority: 'medium',
       assignee: '山田',
@@ -74,26 +74,15 @@ const FeatureList: React.FC = () => {
     }
   ]);
 
-  const [showAddModal, setShowAddModal] = useState(false);
   const [filterStatus, setFilterStatus] = useState<string>('all');
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'todo': return { bg: '#fef3c7', text: '#92400e', border: '#f59e0b' };
-      case 'in-progress': return { bg: '#dbeafe', text: '#1e40af', border: '#3b82f6' };
-      case 'review': return { bg: '#fde68a', text: '#92400e', border: '#f59e0b' };
-      case 'done': return { bg: '#d1fae5', text: '#065f46', border: '#10b981' };
-      default: return { bg: '#f3f4f6', text: '#374151', border: '#9ca3af' };
-    }
-  };
-
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'low': return '#10b981';
-      case 'medium': return '#f59e0b';
-      case 'high': return '#ef4444';
-      case 'critical': return '#dc2626';
-      default: return '#6b7280';
+      case 'todo': return { bg: '#374151', text: '#fbbf24', border: '#f59e0b' };
+      case 'in-progress': return { bg: '#1e3a8a', text: '#60a5fa', border: '#3b82f6' };
+      case 'review': return { bg: '#451a03', text: '#fbbf24', border: '#f59e0b' };
+      case 'done': return { bg: '#064e3b', text: '#34d399', border: '#10b981' };
+      default: return { bg: '#374151', text: '#9ca3af', border: '#6b7280' };
     }
   };
 
@@ -120,182 +109,209 @@ const FeatureList: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
-      <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '0.5rem' }}>
-          機能一覧
+    <div style={{ 
+      padding: '0',
+      background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)',
+      minHeight: '100vh'
+    }}>
+      {/* Hero Section */}
+      <section style={{ 
+        padding: '8rem 2rem 4rem 2rem', 
+        textAlign: 'center',
+        maxWidth: '1200px',
+        margin: '0 auto'
+      }}>
+        <h1 style={{ 
+          fontSize: '3.5rem', 
+          fontWeight: '700', 
+          color: '#ffffff', 
+          marginBottom: '1rem',
+          letterSpacing: '-0.02em',
+          lineHeight: '1.1'
+        }}>
+          機能開発を
+          <br />
+          <span style={{ 
+            background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text'
+          }}>
+            効率的に管理
+          </span>
         </h1>
-        <p style={{ color: '#6b7280', margin: 0 }}>
-          プロジェクトの機能開発を管理・追跡します
+        <p style={{ 
+          color: '#a1a1aa', 
+          margin: '0 auto 3rem auto',
+          fontSize: '1.2rem',
+          maxWidth: '600px',
+          lineHeight: '1.6'
+        }}>
+          プロジェクトの機能開発を美しく、直感的に追跡。
+          チームの生産性を最大化します。
         </p>
-      </div>
+      </section>
 
-      {/* Status Filter */}
-      <div style={{ 
-        display: 'flex', 
-        gap: '0.5rem', 
-        marginBottom: '2rem',
-        flexWrap: 'wrap'
+      {/* Filter Section */}
+      <section style={{ 
+        padding: '0 2rem 4rem 2rem',
+        maxWidth: '1200px',
+        margin: '0 auto'
       }}>
-        {Object.entries(statusCounts).map(([status, count]) => (
-          <button
-            key={status}
-            onClick={() => setFilterStatus(status)}
-            style={{
-              padding: '0.5rem 1rem',
-              borderRadius: '0.5rem',
-              border: '1px solid',
-              borderColor: filterStatus === status ? '#3b82f6' : '#d1d5db',
-              backgroundColor: filterStatus === status ? '#dbeafe' : 'white',
-              color: filterStatus === status ? '#1e40af' : '#374151',
-              cursor: 'pointer',
-              fontSize: '0.875rem',
-              fontWeight: '500',
-              transition: 'all 0.2s'
-            }}
-          >
-            {status === 'all' ? '全て' : 
-             status === 'todo' ? '未着手' :
-             status === 'in-progress' ? '進行中' :
-             status === 'review' ? 'レビュー' : '完了'} ({count})
-          </button>
-        ))}
-      </div>
-
-      {/* Add Feature Button */}
-      <div style={{ marginBottom: '2rem' }}>
-        <button
-          onClick={() => setShowAddModal(true)}
-          style={{
-            padding: '0.75rem 1.5rem',
-            backgroundColor: '#3b82f6',
-            color: 'white',
-            border: 'none',
-            borderRadius: '0.5rem',
-            fontSize: '0.875rem',
-            fontWeight: '500',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            transition: 'all 0.2s'
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3b82f6'}
-        >
-          <span>➕</span>
-          新機能追加
-        </button>
-      </div>
-
-      {/* Features Table */}
-      <div style={{
-        backgroundColor: 'white',
-        borderRadius: '0.75rem',
-        boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
-        overflow: 'hidden',
-        border: '1px solid #e5e7eb'
-      }}>
-        <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr style={{ backgroundColor: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
-                <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600', color: '#374151' }}>機能名</th>
-                <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600', color: '#374151' }}>ステータス</th>
-                <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600', color: '#374151' }}>優先度</th>
-                <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600', color: '#374151' }}>担当者</th>
-                <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600', color: '#374151' }}>期間</th>
-                <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600', color: '#374151' }}>工数</th>
-                <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600', color: '#374151' }}>操作</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredFeatures.map((feature, index) => {
-                const statusColor = getStatusColor(feature.status);
-                return (
-                  <tr 
-                    key={feature.id}
-                    style={{ 
-                      borderBottom: index < filteredFeatures.length - 1 ? '1px solid #f3f4f6' : 'none',
-                      transition: 'background-color 0.2s'
-                    }}
-                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
-                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                  >
-                    <td style={{ padding: '1rem' }}>
-                      <div>
-                        <div style={{ fontWeight: '500', color: '#1f2937', marginBottom: '0.25rem' }}>
-                          {feature.name}
-                        </div>
-                        <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>
-                          {feature.description}
-                        </div>
-                      </div>
-                    </td>
-                    <td style={{ padding: '1rem' }}>
-                      <span style={{
-                        padding: '0.25rem 0.75rem',
-                        borderRadius: '9999px',
-                        fontSize: '0.75rem',
-                        fontWeight: '500',
-                        backgroundColor: statusColor.bg,
-                        color: statusColor.text,
-                        border: `1px solid ${statusColor.border}`
-                      }}>
-                        {getStatusText(feature.status)}
-                      </span>
-                    </td>
-                    <td style={{ padding: '1rem' }}>
-                      <div style={{
-                        width: '0.75rem',
-                        height: '0.75rem',
-                        borderRadius: '50%',
-                        backgroundColor: getPriorityColor(feature.priority),
-                        display: 'inline-block'
-                      }} />
-                    </td>
-                    <td style={{ padding: '1rem', color: '#374151' }}>
-                      {feature.assignee}
-                    </td>
-                    <td style={{ padding: '1rem', fontSize: '0.875rem', color: '#6b7280' }}>
-                      {feature.startDate} - {feature.endDate}
-                    </td>
-                    <td style={{ padding: '1rem', fontSize: '0.875rem', color: '#6b7280' }}>
-                      {feature.actualHours ? `${feature.actualHours}h` : `${feature.estimatedHours}h予定`}
-                    </td>
-                    <td style={{ padding: '1rem' }}>
-                      <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        <button style={{
-                          padding: '0.25rem 0.5rem',
-                          fontSize: '0.75rem',
-                          backgroundColor: '#f3f4f6',
-                          border: '1px solid #d1d5db',
-                          borderRadius: '0.375rem',
-                          cursor: 'pointer',
-                          color: '#374151'
-                        }}>
-                          編集
-                        </button>
-                        <button style={{
-                          padding: '0.25rem 0.5rem',
-                          fontSize: '0.75rem',
-                          backgroundColor: '#fef2f2',
-                          border: '1px solid #fecaca',
-                          borderRadius: '0.375rem',
-                          cursor: 'pointer',
-                          color: '#dc2626'
-                        }}>
-                          削除
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+        <div style={{ 
+          display: 'flex', 
+          gap: '0.75rem', 
+          marginBottom: '3rem',
+          flexWrap: 'wrap',
+          justifyContent: 'center'
+        }}>
+          {Object.entries(statusCounts).map(([status, count]) => (
+            <button
+              key={status}
+              onClick={() => setFilterStatus(status)}
+              style={{
+                padding: '0.75rem 1.5rem',
+                borderRadius: '2rem',
+                border: 'none',
+                background: filterStatus === status 
+                  ? 'rgba(255, 255, 255, 0.2)' 
+                  : 'rgba(255, 255, 255, 0.1)',
+                backdropFilter: 'blur(10px)',
+                color: filterStatus === status ? '#ffffff' : '#a1a1aa',
+                cursor: 'pointer',
+                fontSize: '0.95rem',
+                fontWeight: '500',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                if (filterStatus !== status) {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+                  e.currentTarget.style.color = '#ffffff';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (filterStatus !== status) {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                  e.currentTarget.style.color = '#a1a1aa';
+                }
+              }}
+            >
+              {status === 'all' ? '全て' : 
+               status === 'todo' ? '未着手' :
+               status === 'in-progress' ? '進行中' :
+               status === 'review' ? 'レビュー' : '完了'} ({count})
+            </button>
+          ))}
         </div>
-      </div>
+
+        {/* Features Table */}
+        <div style={{
+          background: 'rgba(255, 255, 255, 0.05)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '1.5rem',
+          overflow: 'hidden',
+          border: '1px solid rgba(255, 255, 255, 0.1)'
+        }}>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ 
+                  background: 'rgba(255, 255, 255, 0.1)', 
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.1)' 
+                }}>
+                  <th style={{ 
+                    padding: '1.5rem 1rem', 
+                    textAlign: 'left', 
+                    fontWeight: '600', 
+                    color: '#ffffff',
+                    fontSize: '0.95rem'
+                  }}>機能名</th>
+                  <th style={{ 
+                    padding: '1.5rem 1rem', 
+                    textAlign: 'left', 
+                    fontWeight: '600', 
+                    color: '#ffffff',
+                    fontSize: '0.95rem'
+                  }}>ステータス</th>
+                  <th style={{ 
+                    padding: '1.5rem 1rem', 
+                    textAlign: 'left', 
+                    fontWeight: '600', 
+                    color: '#ffffff',
+                    fontSize: '0.95rem'
+                  }}>担当者</th>
+                  <th style={{ 
+                    padding: '1.5rem 1rem', 
+                    textAlign: 'left', 
+                    fontWeight: '600', 
+                    color: '#ffffff',
+                    fontSize: '0.95rem'
+                  }}>期間</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredFeatures.map((feature, index) => {
+                  const statusColor = getStatusColor(feature.status);
+                  return (
+                    <tr 
+                      key={feature.id}
+                      style={{ 
+                        borderBottom: index < filteredFeatures.length - 1 ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
+                        transition: 'background-color 0.3s ease'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                    >
+                      <td style={{ padding: '1.5rem 1rem' }}>
+                        <div>
+                          <div style={{ 
+                            fontWeight: '600', 
+                            color: '#ffffff', 
+                            marginBottom: '0.5rem',
+                            fontSize: '1rem'
+                          }}>
+                            {feature.name}
+                          </div>
+                          <div style={{ 
+                            fontSize: '0.9rem', 
+                            color: '#a1a1aa',
+                            lineHeight: '1.5'
+                          }}>
+                            {feature.description}
+                          </div>
+                        </div>
+                      </td>
+                      <td style={{ padding: '1.5rem 1rem' }}>
+                        <span style={{
+                          padding: '0.5rem 1rem',
+                          borderRadius: '2rem',
+                          fontSize: '0.85rem',
+                          fontWeight: '500',
+                          backgroundColor: statusColor.bg,
+                          color: statusColor.text,
+                          border: `1px solid ${statusColor.border}`
+                        }}>
+                          {getStatusText(feature.status)}
+                        </span>
+                      </td>
+                      <td style={{ padding: '1.5rem 1rem' }}>
+                        <span style={{ color: '#ffffff', fontWeight: '500' }}>
+                          {feature.assignee}
+                        </span>
+                      </td>
+                      <td style={{ padding: '1.5rem 1rem' }}>
+                        <div style={{ color: '#a1a1aa', fontSize: '0.9rem' }}>
+                          {feature.startDate} - {feature.endDate}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
