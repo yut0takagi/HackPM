@@ -75,15 +75,46 @@ const TeamPage: React.FC = () => {
   const overallProgress = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
   return (
-    <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
-      <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '0.5rem' }}>
-          チーム管理
+    <div style={{ 
+      padding: '0',
+      background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)',
+      minHeight: '100vh'
+    }}>
+      <section style={{ 
+        padding: '8rem 2rem 4rem 2rem', 
+        maxWidth: '1200px',
+        margin: '0 auto'
+      }}>
+        <h1 style={{ 
+          fontSize: '3.5rem', 
+          fontWeight: '700', 
+          color: '#ffffff', 
+          marginBottom: '1rem',
+          letterSpacing: '-0.02em',
+          textAlign: 'center'
+        }}>
+          チームの
+          <br />
+          <span style={{ 
+            background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text'
+          }}>
+            パフォーマンス
+          </span>
         </h1>
-        <p style={{ color: '#6b7280', margin: 0 }}>
+        <p style={{ 
+          color: '#a1a1aa', 
+          margin: '0 auto',
+          fontSize: '1.2rem',
+          maxWidth: '600px',
+          lineHeight: '1.6',
+          textAlign: 'center'
+        }}>
           チームメンバーの情報とタスクの進捗を管理
         </p>
-      </div>
+      </section>
 
       {/* Team Stats */}
       <div style={{ 
@@ -93,59 +124,59 @@ const TeamPage: React.FC = () => {
         marginBottom: '2rem'
       }}>
         <div style={{
-          backgroundColor: 'white',
+          backgroundColor: '#1f2937',
           padding: '1.5rem',
           borderRadius: '0.75rem',
-          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
-          border: '1px solid #e5e7eb',
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.3)',
+          border: '1px solid #374151',
           textAlign: 'center'
         }}>
-          <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#3b82f6', marginBottom: '0.5rem' }}>
+          <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#60a5fa', marginBottom: '0.5rem' }}>
             {members.length}
           </div>
-          <div style={{ color: '#6b7280', fontSize: '0.875rem' }}>チームメンバー</div>
+          <div style={{ color: '#9ca3af', fontSize: '0.875rem' }}>チームメンバー</div>
         </div>
 
         <div style={{
-          backgroundColor: 'white',
+          backgroundColor: '#1f2937',
           padding: '1.5rem',
           borderRadius: '0.75rem',
-          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
-          border: '1px solid #e5e7eb',
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.3)',
+          border: '1px solid #374151',
           textAlign: 'center'
         }}>
-          <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#10b981', marginBottom: '0.5rem' }}>
+          <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#34d399', marginBottom: '0.5rem' }}>
             {completedTasks}
           </div>
-          <div style={{ color: '#6b7280', fontSize: '0.875rem' }}>完了タスク</div>
+          <div style={{ color: '#9ca3af', fontSize: '0.875rem' }}>完了タスク</div>
         </div>
 
         <div style={{
-          backgroundColor: 'white',
+          backgroundColor: '#1f2937',
           padding: '1.5rem',
           borderRadius: '0.75rem',
-          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
-          border: '1px solid #e5e7eb',
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.3)',
+          border: '1px solid #374151',
           textAlign: 'center'
         }}>
-          <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#f59e0b', marginBottom: '0.5rem' }}>
+          <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#fbbf24', marginBottom: '0.5rem' }}>
             {totalTasks}
           </div>
-          <div style={{ color: '#6b7280', fontSize: '0.875rem' }}>総タスク数</div>
+          <div style={{ color: '#9ca3af', fontSize: '0.875rem' }}>総タスク数</div>
         </div>
 
         <div style={{
-          backgroundColor: 'white',
+          backgroundColor: '#1f2937',
           padding: '1.5rem',
           borderRadius: '0.75rem',
-          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
-          border: '1px solid #e5e7eb',
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.3)',
+          border: '1px solid #374151',
           textAlign: 'center'
         }}>
-          <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#8b5cf6', marginBottom: '0.5rem' }}>
+          <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#a78bfa', marginBottom: '0.5rem' }}>
             {overallProgress}%
           </div>
-          <div style={{ color: '#6b7280', fontSize: '0.875rem' }}>全体進捗</div>
+          <div style={{ color: '#9ca3af', fontSize: '0.875rem' }}>全体進捗</div>
         </div>
       </div>
 
@@ -162,20 +193,20 @@ const TeamPage: React.FC = () => {
             <div
               key={member.id}
               style={{
-                backgroundColor: 'white',
+                backgroundColor: '#1f2937',
                 borderRadius: '0.75rem',
                 padding: '1.5rem',
-                boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
-                border: '1px solid #e5e7eb',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.3)',
+                border: '1px solid #374151',
                 transition: 'transform 0.2s, box-shadow 0.2s'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.boxShadow = '0 8px 12px -2px rgba(0, 0, 0, 0.4)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 1px 3px 0 rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.3)';
               }}
             >
               {/* Member Header */}
@@ -188,7 +219,7 @@ const TeamPage: React.FC = () => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  backgroundColor: '#f3f4f6',
+                  backgroundColor: '#374151',
                   borderRadius: '50%'
                 }}>
                   {member.avatar}
@@ -197,20 +228,20 @@ const TeamPage: React.FC = () => {
                   <h3 style={{ 
                     fontSize: '1.25rem', 
                     fontWeight: '600', 
-                    color: '#1f2937', 
+                    color: '#f8fafc', 
                     margin: '0 0 0.25rem 0' 
                   }}>
                     {member.name}
                   </h3>
                   <p style={{ 
-                    color: '#6b7280', 
+                    color: '#9ca3af', 
                     fontSize: '0.875rem', 
                     margin: '0 0 0.25rem 0' 
                   }}>
                     {member.role}
                   </p>
                   <p style={{ 
-                    color: '#9ca3af', 
+                    color: '#6b7280', 
                     fontSize: '0.75rem', 
                     margin: 0 
                   }}>
@@ -224,7 +255,7 @@ const TeamPage: React.FC = () => {
                 <h4 style={{ 
                   fontSize: '0.875rem', 
                   fontWeight: '600', 
-                  color: '#374151', 
+                  color: '#e5e7eb', 
                   marginBottom: '0.5rem' 
                 }}>
                   スキル
@@ -235,8 +266,8 @@ const TeamPage: React.FC = () => {
                       key={index}
                       style={{
                         padding: '0.25rem 0.75rem',
-                        backgroundColor: '#dbeafe',
-                        color: '#1e40af',
+                        backgroundColor: '#1e3a8a',
+                        color: '#60a5fa',
                         borderRadius: '9999px',
                         fontSize: '0.75rem',
                         fontWeight: '500'
@@ -259,7 +290,7 @@ const TeamPage: React.FC = () => {
                   <h4 style={{ 
                     fontSize: '0.875rem', 
                     fontWeight: '600', 
-                    color: '#374151', 
+                    color: '#e5e7eb', 
                     margin: 0 
                   }}>
                     タスク進捗
@@ -267,7 +298,7 @@ const TeamPage: React.FC = () => {
                   <span style={{ 
                     fontSize: '0.875rem', 
                     fontWeight: '600', 
-                    color: '#374151' 
+                    color: '#e5e7eb' 
                   }}>
                     {member.tasksCompleted}/{member.tasksAssigned}
                   </span>
@@ -276,7 +307,7 @@ const TeamPage: React.FC = () => {
                 <div style={{
                   width: '100%',
                   height: '0.5rem',
-                  backgroundColor: '#f3f4f6',
+                  backgroundColor: '#4b5563',
                   borderRadius: '9999px',
                   overflow: 'hidden',
                   marginBottom: '0.5rem'
@@ -285,7 +316,7 @@ const TeamPage: React.FC = () => {
                     style={{
                       width: `${completionRate}%`,
                       height: '100%',
-                      backgroundColor: completionRate === 100 ? '#10b981' : '#3b82f6',
+                      backgroundColor: completionRate === 100 ? '#34d399' : '#60a5fa',
                       borderRadius: '9999px',
                       transition: 'width 0.3s ease'
                     }}
@@ -294,7 +325,7 @@ const TeamPage: React.FC = () => {
                 
                 <div style={{ 
                   fontSize: '0.75rem', 
-                  color: '#6b7280',
+                  color: '#9ca3af',
                   textAlign: 'right'
                 }}>
                   {completionRate}% 完了

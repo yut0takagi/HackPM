@@ -87,36 +87,67 @@ const GanttChart: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
-      <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '0.5rem' }}>
-          ガントチャート
+    <div style={{ 
+      padding: '0',
+      background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)',
+      minHeight: '100vh'
+    }}>
+      <section style={{ 
+        padding: '8rem 2rem 4rem 2rem', 
+        maxWidth: '1200px',
+        margin: '0 auto'
+      }}>
+        <h1 style={{ 
+          fontSize: '3.5rem', 
+          fontWeight: '700', 
+          color: '#ffffff', 
+          marginBottom: '1rem',
+          letterSpacing: '-0.02em',
+          textAlign: 'center'
+        }}>
+          プロジェクト
+          <br />
+          <span style={{ 
+            background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text'
+          }}>
+            スケジュール
+          </span>
         </h1>
-        <p style={{ color: '#6b7280', margin: 0 }}>
+        <p style={{ 
+          color: '#a1a1aa', 
+          margin: '0 auto',
+          fontSize: '1.2rem',
+          maxWidth: '600px',
+          lineHeight: '1.6',
+          textAlign: 'center'
+        }}>
           プロジェクトスケジュールの可視化と進捗管理
         </p>
-      </div>
+      </section>
 
       {/* Chart Container */}
       <div style={{
-        backgroundColor: 'white',
+        backgroundColor: '#1f2937',
         borderRadius: '0.75rem',
-        boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.3)',
         overflow: 'hidden',
-        border: '1px solid #e5e7eb'
+        border: '1px solid #374151'
       }}>
         {/* Header */}
         <div style={{ 
           display: 'grid', 
           gridTemplateColumns: '300px 1fr',
-          backgroundColor: '#f9fafb',
-          borderBottom: '1px solid #e5e7eb'
+          backgroundColor: '#374151',
+          borderBottom: '1px solid #4b5563'
         }}>
           <div style={{ 
             padding: '1rem', 
-            borderRight: '1px solid #e5e7eb',
+            borderRight: '1px solid #4b5563',
             fontWeight: '600',
-            color: '#374151'
+            color: '#f8fafc'
           }}>
             タスク
           </div>
@@ -132,9 +163,9 @@ const GanttChart: React.FC = () => {
                   padding: '0.5rem 0.25rem',
                   textAlign: 'center',
                   fontSize: '0.75rem',
-                  color: '#6b7280',
-                  borderRight: index < dates.length - 1 ? '1px solid #f3f4f6' : 'none',
-                  backgroundColor: date.getDay() === 0 || date.getDay() === 6 ? '#f9fafb' : 'transparent'
+                  color: '#9ca3af',
+                  borderRight: index < dates.length - 1 ? '1px solid #4b5563' : 'none',
+                  backgroundColor: date.getDay() === 0 || date.getDay() === 6 ? '#4b5563' : 'transparent'
                 }}
               >
                 <div>{date.getDate()}</div>
@@ -157,21 +188,21 @@ const GanttChart: React.FC = () => {
                 style={{
                   display: 'grid',
                   gridTemplateColumns: '300px 1fr',
-                  borderBottom: index < tasks.length - 1 ? '1px solid #f3f4f6' : 'none',
+                  borderBottom: index < tasks.length - 1 ? '1px solid #374151' : 'none',
                   minHeight: '4rem'
                 }}
               >
                 {/* Task Info */}
                 <div style={{
                   padding: '1rem',
-                  borderRight: '1px solid #e5e7eb',
+                  borderRight: '1px solid #4b5563',
                   display: 'flex',
                   alignItems: 'center'
                 }}>
                   <div>
                     <div style={{ 
                       fontWeight: '500', 
-                      color: '#1f2937',
+                      color: '#f8fafc',
                       marginBottom: '0.25rem',
                       fontSize: '0.875rem'
                     }}>
@@ -179,7 +210,7 @@ const GanttChart: React.FC = () => {
                     </div>
                     <div style={{ 
                       fontSize: '0.75rem', 
-                      color: '#6b7280',
+                      color: '#9ca3af',
                       display: 'flex',
                       alignItems: 'center',
                       gap: '0.5rem'
