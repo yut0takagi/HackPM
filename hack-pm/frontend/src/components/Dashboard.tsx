@@ -26,29 +26,41 @@ const Dashboard: React.FC = () => {
     }, []);
 
     const initializeApp = async () => {
-        // First check if API is healthy
-        const healthy = await checkApiHealth();
-        
-        if (healthy) {
-            await fetchStats();
-        } else {
-            setError('APIサーバーに接続できません。バックエンドが起動しているか確認してください。');
+        try {
+            console.log('Initializing app...');
+            // First check if API is healthy
+            const healthy = await checkApiHealth();
+            console.log('API health check result:', healthy);
+
+            if (healthy) {
+                console.log('API is healthy, fetching stats...');
+                await fetchStats();
+            } else {
+                console.error('API health check failed');
+                setError('APIサーバーに接続できません。バックエンドが起動しているか確認してください。');
+                setLoading(false);
+            }
+        } catch (error) {
+            console.error('Error during app initialization:', error);
+            setError(`初期化エラー: ${error instanceof Error ? error.message : 'Unknown error'}`);
             setLoading(false);
         }
     };
 
     const fetchStats = async () => {
         try {
+            console.log('Fetching stats...');
             setError(null);
             const data = await api.getStats();
+            console.log('Stats data received:', data);
             setStats(data);
         } catch (err) {
-            if (err instanceof ApiError) {
-                setError(`Failed to load stats (${err.status}): ${err.message}`);
-            } else {
-                setError(err instanceof Error ? err.message : 'Failed to load statistics');
-            }
             console.error('Failed to fetch stats:', err);
+            if (err instanceof ApiError) {
+                setError(`統計情報の読み込みに失敗しました (${err.status}): ${err.message}`);
+            } else {
+                setError(err instanceof Error ? err.message : '統計情報の読み込みに失敗しました');
+            }
         } finally {
             setLoading(false);
         }
@@ -66,6 +78,19 @@ const Dashboard: React.FC = () => {
                 textAlign: 'center',
                 background: 'radial-gradient(ellipse at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%)'
             }}>
+                <div style={{
+                    display: 'inline-block',
+                    padding: '0.5rem 1.5rem',
+                    background: 'rgba(34, 197, 94, 0.1)',
+                    border: '1px solid rgba(34, 197, 94, 0.3)',
+                    borderRadius: '2rem',
+                    color: '#22c55e',
+                    fontSize: '0.9rem',
+                    fontWeight: '500',
+                    marginBottom: '2rem'
+                }}>
+                    🚀 Hackathon Project Dashboard
+                </div>
                 <h1 style={{
                     fontSize: '4rem',
                     fontWeight: '700',
@@ -74,7 +99,7 @@ const Dashboard: React.FC = () => {
                     letterSpacing: '-0.02em',
                     lineHeight: '1.1'
                 }}>
-                    GitHub統合
+                    Keel Project
                     <br />
                     <span style={{
                         background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
@@ -82,7 +107,7 @@ const Dashboard: React.FC = () => {
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text'
                     }}>
-                        ダッシュボード
+                        Management Hub
                     </span>
                 </h1>
                 <p style={{
@@ -93,10 +118,80 @@ const Dashboard: React.FC = () => {
                     lineHeight: '1.6',
                     fontWeight: '400'
                 }}>
-                    リアルタイムでGitHubリポジトリの活動を監視。
+                    Hackathon用テンプレートリポジトリの進捗管理。
                     <br />
-                    プロジェクトの進捗を美しく可視化します。
+                    チームの開発状況をリアルタイムで追跡します。
                 </p>
+
+                {/* Quick Actions */}
+                <div style={{
+                    display: 'flex',
+                    gap: '1rem',
+                    justifyContent: 'center',
+                    marginTop: '2rem',
+                    flexWrap: 'wrap'
+                }}>
+                    <a
+                        href="https://github.com/yut0takagi/Keel"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            padding: '0.75rem 1.5rem',
+                            background: 'rgba(255, 255, 255, 0.1)',
+                            backdropFilter: 'blur(20px)',
+                            border: '1px solid rgba(255, 255, 255, 0.2)',
+                            borderRadius: '0.75rem',
+                            color: '#ffffff',
+                            textDecoration: 'none',
+                            fontSize: '0.95rem',
+                            fontWeight: '500',
+                            transition: 'all 0.3s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+                            e.currentTarget.style.transform = 'translateY(-2px)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                            e.currentTarget.style.transform = 'translateY(0)';
+                        }}
+                    >
+                        📁 リポジトリを開く
+                    </a>
+                    <a
+                        href="https://github.com/yut0takagi/Keel/issues"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            padding: '0.75rem 1.5rem',
+                            background: 'rgba(59, 130, 246, 0.1)',
+                            backdropFilter: 'blur(20px)',
+                            border: '1px solid rgba(59, 130, 246, 0.3)',
+                            borderRadius: '0.75rem',
+                            color: '#3b82f6',
+                            textDecoration: 'none',
+                            fontSize: '0.95rem',
+                            fontWeight: '500',
+                            transition: 'all 0.3s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.background = 'rgba(59, 130, 246, 0.15)';
+                            e.currentTarget.style.transform = 'translateY(-2px)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'rgba(59, 130, 246, 0.1)';
+                            e.currentTarget.style.transform = 'translateY(0)';
+                        }}
+                    >
+                        🎯 Issues管理
+                    </a>
+                </div>
             </section>
 
             {/* Stats Section */}
@@ -174,10 +269,34 @@ const Dashboard: React.FC = () => {
                                 color: '#60a5fa',
                                 marginBottom: '0.5rem'
                             }}>
-                                {stats.total_repos}
+                                {stats.total_branches}
                             </div>
                             <div style={{ color: '#a1a1aa', fontSize: '0.9rem' }}>
-                                監視中リポジトリ
+                                開発ブランチ
+                            </div>
+                        </div>
+
+                        <div style={{
+                            background: 'rgba(255, 255, 255, 0.05)',
+                            backdropFilter: 'blur(20px)',
+                            padding: '2rem',
+                            borderRadius: '1.5rem',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            textAlign: 'center',
+                            transition: 'transform 0.3s ease'
+                        }}
+                            onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-4px)'}
+                            onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+                            <div style={{
+                                fontSize: '2.5rem',
+                                fontWeight: '700',
+                                color: stats.open_issues === 0 ? '#22c55e' : '#fbbf24',
+                                marginBottom: '0.5rem'
+                            }}>
+                                {stats.open_issues}
+                            </div>
+                            <div style={{ color: '#a1a1aa', fontSize: '0.9rem' }}>
+                                残りタスク
                             </div>
                         </div>
 
@@ -201,7 +320,7 @@ const Dashboard: React.FC = () => {
                                 {stats.open_prs}
                             </div>
                             <div style={{ color: '#a1a1aa', fontSize: '0.9rem' }}>
-                                オープンPR
+                                レビュー待ちPR
                             </div>
                         </div>
 
@@ -219,37 +338,13 @@ const Dashboard: React.FC = () => {
                             <div style={{
                                 fontSize: '2.5rem',
                                 fontWeight: '700',
-                                color: '#fbbf24',
+                                color: stats.recent_ci_runs > 0 ? '#a78bfa' : '#6b7280',
                                 marginBottom: '0.5rem'
                             }}>
-                                {stats.open_issues}
+                                {stats.recent_ci_runs}
                             </div>
                             <div style={{ color: '#a1a1aa', fontSize: '0.9rem' }}>
-                                オープンIssue
-                            </div>
-                        </div>
-
-                        <div style={{
-                            background: 'rgba(255, 255, 255, 0.05)',
-                            backdropFilter: 'blur(20px)',
-                            padding: '2rem',
-                            borderRadius: '1.5rem',
-                            border: '1px solid rgba(255, 255, 255, 0.1)',
-                            textAlign: 'center',
-                            transition: 'transform 0.3s ease'
-                        }}
-                            onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-4px)'}
-                            onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-                            <div style={{
-                                fontSize: '2.5rem',
-                                fontWeight: '700',
-                                color: '#a78bfa',
-                                marginBottom: '0.5rem'
-                            }}>
-                                {stats.recent_events}
-                            </div>
-                            <div style={{ color: '#a1a1aa', fontSize: '0.9rem' }}>
-                                最近のイベント
+                                CI実行回数
                             </div>
                         </div>
                     </div>
@@ -258,9 +353,115 @@ const Dashboard: React.FC = () => {
                         textAlign: 'center',
                         color: '#6b7280',
                         fontSize: '0.8rem',
-                        marginBottom: '2rem'
+                        marginBottom: '3rem'
                     }}>
                         最終更新: {new Date(stats.last_updated).toLocaleString('ja-JP')}
+                    </div>
+
+                    {/* Project Progress Section */}
+                    <div style={{
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        backdropFilter: 'blur(20px)',
+                        padding: '2.5rem',
+                        borderRadius: '1.5rem',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        marginBottom: '2rem'
+                    }}>
+                        <h3 style={{
+                            color: '#ffffff',
+                            fontSize: '1.5rem',
+                            fontWeight: '600',
+                            marginBottom: '1.5rem',
+                            textAlign: 'center'
+                        }}>
+                            🎯 プロジェクト進捗
+                        </h3>
+
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                            gap: '1.5rem'
+                        }}>
+                            {/* Task Completion */}
+                            <div style={{
+                                background: 'rgba(0, 0, 0, 0.2)',
+                                padding: '1.5rem',
+                                borderRadius: '1rem',
+                                border: '1px solid rgba(255, 255, 255, 0.1)'
+                            }}>
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    marginBottom: '1rem'
+                                }}>
+                                    <span style={{ color: '#a1a1aa', fontSize: '0.9rem' }}>
+                                        タスク完了率
+                                    </span>
+                                    <span style={{ color: '#ffffff', fontWeight: '600' }}>
+                                        {stats.open_issues === 0 ? '100%' : `${Math.round((1 - stats.open_issues / (stats.open_issues + 1)) * 100)}%`}
+                                    </span>
+                                </div>
+                                <div style={{
+                                    width: '100%',
+                                    height: '8px',
+                                    background: 'rgba(255, 255, 255, 0.1)',
+                                    borderRadius: '4px',
+                                    overflow: 'hidden'
+                                }}>
+                                    <div style={{
+                                        width: stats.open_issues === 0 ? '100%' : `${Math.round((1 - stats.open_issues / (stats.open_issues + 1)) * 100)}%`,
+                                        height: '100%',
+                                        background: 'linear-gradient(90deg, #22c55e 0%, #16a34a 100%)',
+                                        transition: 'width 0.5s ease'
+                                    }} />
+                                </div>
+                            </div>
+
+                            {/* Development Activity */}
+                            <div style={{
+                                background: 'rgba(0, 0, 0, 0.2)',
+                                padding: '1.5rem',
+                                borderRadius: '1rem',
+                                border: '1px solid rgba(255, 255, 255, 0.1)'
+                            }}>
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    marginBottom: '1rem'
+                                }}>
+                                    <span style={{ color: '#a1a1aa', fontSize: '0.9rem' }}>
+                                        開発アクティビティ
+                                    </span>
+                                    <span style={{
+                                        color: stats.recent_ci_runs > 5 ? '#22c55e' : stats.recent_ci_runs > 0 ? '#fbbf24' : '#ef4444',
+                                        fontWeight: '600'
+                                    }}>
+                                        {stats.recent_ci_runs > 5 ? '高' : stats.recent_ci_runs > 0 ? '中' : '低'}
+                                    </span>
+                                </div>
+                                <div style={{
+                                    display: 'flex',
+                                    gap: '0.5rem',
+                                    alignItems: 'center'
+                                }}>
+                                    {[...Array(5)].map((_, i) => (
+                                        <div
+                                            key={i}
+                                            style={{
+                                                width: '12px',
+                                                height: '12px',
+                                                borderRadius: '50%',
+                                                background: i < Math.min(stats.recent_ci_runs / 2, 5)
+                                                    ? 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)'
+                                                    : 'rgba(255, 255, 255, 0.1)'
+                                            }}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
             )}

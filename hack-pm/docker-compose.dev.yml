@@ -2,36 +2,40 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     ports:
-      - "5173:5173"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    environment:
-      - VITE_API_URL=http://localhost:9000
+      - "5173:80"
     depends_on:
       - backend-python
     restart: unless-stopped
+    environment:
+      - NODE_ENV=development
 
   backend-python:
     build:
       context: ./backend-python
       dockerfile: Dockerfile
     ports:
-      - "9000:9000"
+      - "8000:8000"
     volumes:
       - ./backend-python:/app
-      - ./hack_pm.db:/app/hack_pm.db
+      - ./data:/app/data
+      - /app/venv  # Exclude venv from volume mount
     env_file:
       - .env
     environment:
-      - PORT=9000
-      - DATABASE_URL=sqlite:///./hack_pm.db
+      - PORT=8000
+      - DATABASE_URL=sqlite:///./data/hack_pm.db
+      - PYTHONPATH=/app/src
+      - ENVIRONMENT=development
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
     restart: unless-stopped
+
+volumes:
+  data:
+    driver: local

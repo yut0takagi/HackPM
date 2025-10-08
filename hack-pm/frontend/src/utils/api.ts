@@ -90,8 +90,16 @@ export const api = {
   getRepository: (id: number) => apiCall<any>(`/api/repos/${id}`),
   getRepositoryBranches: (id: number, limit = 50) => apiCall<any[]>(`/api/repos/${id}/branches?limit=${limit}`),
   getRepositoryPulls: (id: number, state = 'open', limit = 50) => apiCall<any[]>(`/api/repos/${id}/pulls?state=${state}&limit=${limit}`),
-  getRepositoryIssues: (id: number, state = 'open', limit = 50) => apiCall<any[]>(`/api/repos/${id}/issues?state=${state}&limit=${limit}`),
+  getRepositoryIssues: (id: number, state = 'open', limit = 50, includeTemplateData = false) => {
+    const params = new URLSearchParams({
+      state,
+      limit: limit.toString(),
+      include_template_data: includeTemplateData.toString()
+    });
+    return apiCall<any[]>(`/api/repos/${id}/issues?${params}`);
+  },
   getRepositoryCIRuns: (id: number, limit = 50) => apiCall<any[]>(`/api/repos/${id}/ci-runs?limit=${limit}`),
+  getRepositoryGitGraph: (id: number, limit = 100) => apiCall<any>(`/api/repos/${id}/git-graph?limit=${limit}`),
   getEvents: (params: { repo?: string; event_type?: string; limit?: number } = {}) => {
     const searchParams = new URLSearchParams();
     if (params.repo) searchParams.set('repo', params.repo);
@@ -108,4 +116,49 @@ export const api = {
       method: 'POST',
       body: JSON.stringify({ message, webhook_url: webhookUrl }),
     }),
+  
+  // Time-boxed development endpoints
+  createTimeBox: (repoId: number, data: any) =>
+    apiCall<any>(`/api/repos/${repoId}/timeboxes`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+  getTimeBoxes: (repoId: number) => apiCall<any[]>(`/api/repos/${repoId}/timeboxes`),
+  getActiveTimeBox: (repoId: number) => apiCall<any>(`/api/repos/${repoId}/timeboxes/active`),
+  setIssueDeadline: (repoId: number, issueId: number, data: any) =>
+    apiCall<any>(`/api/repos/${repoId}/issues/${issueId}/deadline`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+  startIssueWork: (repoId: number, issueId: number) =>
+    apiCall<any>(`/api/repos/${repoId}/issues/${issueId}/start-work`, {
+      method: 'POST',
+    }),
+  getTimeSensitiveIssues: (repoId: number, hoursThreshold = 24) =>
+    apiCall<any[]>(`/api/repos/${repoId}/issues/time-sensitive?hours_threshold=${hoursThreshold}`),
+  escalateOverdueIssues: (repoId: number) =>
+    apiCall<any>(`/api/repos/${repoId}/issues/escalate-overdue`, {
+      method: 'POST',
+    }),
+  getTimeBoxStats: (repoId: number) => apiCall<any>(`/api/repos/${repoId}/timebox-stats`),
+  getPhaseRecommendations: (repoId: number) => apiCall<any>(`/api/repos/${repoId}/phase-recommendations`),
+  createRapidIssue: (repoId: number, data: any) =>
+    apiCall<any>(`/api/repos/${repoId}/rapid-issue`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+  
+  // Generic API methods for flexibility
+  get: <T>(endpoint: string) => apiCall<T>(endpoint),
+  post: <T>(endpoint: string, data?: any) => apiCall<T>(endpoint, {
+    method: 'POST',
+    body: data ? JSON.stringify(data) : undefined,
+  }),
+  put: <T>(endpoint: string, data?: any) => apiCall<T>(endpoint, {
+    method: 'PUT',
+    body: data ? JSON.stringify(data) : undefined,
+  }),
+  delete: <T>(endpoint: string) => apiCall<T>(endpoint, {
+    method: 'DELETE',
+  }),
 };

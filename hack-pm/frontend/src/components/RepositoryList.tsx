@@ -135,7 +135,7 @@ const RepositoryList: React.FC = () => {
         marginBottom: '2rem',
         textAlign: 'center'
       }}>
-        Monitored Repositories
+        📊 プロジェクト詳細
       </h2>
       
       <div style={{
@@ -194,9 +194,93 @@ const RepositoryList: React.FC = () => {
               )}
             </div>
 
+            {/* Quick Actions */}
+            <div style={{
+              display: 'flex',
+              gap: '0.75rem',
+              marginBottom: '1.5rem',
+              flexWrap: 'wrap'
+            }}>
+              <a
+                href={`${repo.html_url}/issues`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.5rem 1rem',
+                  background: 'rgba(251, 191, 36, 0.1)',
+                  border: '1px solid rgba(251, 191, 36, 0.3)',
+                  borderRadius: '0.5rem',
+                  color: '#fbbf24',
+                  textDecoration: 'none',
+                  fontSize: '0.85rem',
+                  fontWeight: '500',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(251, 191, 36, 0.15)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(251, 191, 36, 0.1)';
+                }}
+              >
+                🎯 Issues ({repo.stats.open_issues})
+              </a>
+              <a
+                href={`${repo.html_url}/pulls`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.5rem 1rem',
+                  background: 'rgba(52, 211, 153, 0.1)',
+                  border: '1px solid rgba(52, 211, 153, 0.3)',
+                  borderRadius: '0.5rem',
+                  color: '#34d399',
+                  textDecoration: 'none',
+                  fontSize: '0.85rem',
+                  fontWeight: '500',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(52, 211, 153, 0.15)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(52, 211, 153, 0.1)';
+                }}
+              >
+                🔄 PRs ({repo.stats.open_prs})
+              </a>
+              <a
+                href={`${repo.html_url}/actions`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.5rem 1rem',
+                  background: `rgba(${getStatusColor(repo.stats.latest_ci_status, repo.stats.latest_ci_conclusion).replace('#', '')}, 0.1)`,
+                  border: `1px solid rgba(${getStatusColor(repo.stats.latest_ci_status, repo.stats.latest_ci_conclusion).replace('#', '')}, 0.3)`,
+                  borderRadius: '0.5rem',
+                  color: getStatusColor(repo.stats.latest_ci_status, repo.stats.latest_ci_conclusion),
+                  textDecoration: 'none',
+                  fontSize: '0.85rem',
+                  fontWeight: '500',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                {getStatusText(repo.stats.latest_ci_status, repo.stats.latest_ci_conclusion)}
+              </a>
+            </div>
+
             <div style={{ 
               display: 'grid', 
-              gridTemplateColumns: '1fr 1fr', 
+              gridTemplateColumns: '1fr 1fr 1fr', 
               gap: '1rem',
               marginBottom: '1rem'
             }}>
@@ -212,7 +296,23 @@ const RepositoryList: React.FC = () => {
                   fontSize: '0.8rem', 
                   color: '#a1a1aa' 
                 }}>
-                  Branches
+                  開発ブランチ
+                </div>
+              </div>
+              
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ 
+                  fontSize: '1.5rem', 
+                  fontWeight: '700', 
+                  color: repo.stats.open_issues === 0 ? '#22c55e' : '#fbbf24'
+                }}>
+                  {repo.stats.open_issues}
+                </div>
+                <div style={{ 
+                  fontSize: '0.8rem', 
+                  color: '#a1a1aa' 
+                }}>
+                  残りタスク
                 </div>
               </div>
               
@@ -228,39 +328,7 @@ const RepositoryList: React.FC = () => {
                   fontSize: '0.8rem', 
                   color: '#a1a1aa' 
                 }}>
-                  Open PRs
-                </div>
-              </div>
-              
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ 
-                  fontSize: '1.5rem', 
-                  fontWeight: '700', 
-                  color: '#fbbf24' 
-                }}>
-                  {repo.stats.open_issues}
-                </div>
-                <div style={{ 
-                  fontSize: '0.8rem', 
-                  color: '#a1a1aa' 
-                }}>
-                  Open Issues
-                </div>
-              </div>
-              
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ 
-                  fontSize: '0.9rem', 
-                  fontWeight: '600', 
-                  color: getStatusColor(repo.stats.latest_ci_status, repo.stats.latest_ci_conclusion)
-                }}>
-                  {getStatusText(repo.stats.latest_ci_status, repo.stats.latest_ci_conclusion)}
-                </div>
-                <div style={{ 
-                  fontSize: '0.8rem', 
-                  color: '#a1a1aa' 
-                }}>
-                  CI Status
+                  レビュー待ち
                 </div>
               </div>
             </div>
@@ -272,17 +340,34 @@ const RepositoryList: React.FC = () => {
               paddingTop: '1rem',
               borderTop: '1px solid rgba(255, 255, 255, 0.1)'
             }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem'
+              }}>
+                <span style={{
+                  padding: '0.25rem 0.75rem',
+                  background: 'rgba(34, 197, 94, 0.1)',
+                  border: '1px solid rgba(34, 197, 94, 0.3)',
+                  borderRadius: '1rem',
+                  color: '#22c55e',
+                  fontSize: '0.75rem',
+                  fontWeight: '500'
+                }}>
+                  🚀 Hackathon
+                </span>
+                <span style={{ 
+                  fontSize: '0.8rem', 
+                  color: '#a1a1aa' 
+                }}>
+                  {repo.visibility}
+                </span>
+              </div>
               <span style={{ 
                 fontSize: '0.8rem', 
                 color: '#a1a1aa' 
               }}>
-                {repo.visibility}
-              </span>
-              <span style={{ 
-                fontSize: '0.8rem', 
-                color: '#a1a1aa' 
-              }}>
-                Updated {new Date(repo.updated_at).toLocaleDateString()}
+                更新: {new Date(repo.updated_at).toLocaleDateString('ja-JP')}
               </span>
             </div>
           </div>

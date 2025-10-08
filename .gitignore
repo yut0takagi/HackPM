@@ -3,5 +3,7 @@
 *.json
 node_modules
 hack-pm/frontend/node_modules
-__pycache__/
+.kiro/*
 *.db
+test_reports/*
+__pycache__/

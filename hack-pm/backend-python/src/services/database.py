@@ -120,6 +120,13 @@ class Issue(Base):
     milestone = Column(String)
     html_url = Column(String)
     closed_at = Column(DateTime)
+    # Time-boxed development fields
+    estimated_hours = Column(Integer)  # Estimated completion time in hours
+    deadline = Column(DateTime)  # Hard deadline for completion
+    time_box_start = Column(DateTime)  # When work started on this issue
+    time_box_end = Column(DateTime)  # When time box expires
+    priority_escalated = Column(Boolean, default=False)  # Auto-escalated due to deadline
+    hackathon_phase = Column(String)  # planning, development, testing, presentation
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
@@ -190,9 +197,42 @@ class Event(Base):
         Index('idx_event_delivery', 'delivery_id'),
     )
 
+class HackathonTimeBox(Base):
+    __tablename__ = "hackathon_timeboxes"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    repo_id = Column(Integer, ForeignKey("repos.id"), nullable=False)
+    name = Column(String, nullable=False)  # e.g., "Sprint 1", "Feature Development Phase"
+    phase = Column(String, nullable=False)  # planning, development, testing, presentation
+    start_time = Column(DateTime, nullable=False)
+    end_time = Column(DateTime, nullable=False)
+    description = Column(Text)
+    is_active = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Relationships
+    repository = relationship("Repository")
+    
+    # Indexes
+    __table_args__ = (
+        Index('idx_timebox_repo_active', 'repo_id', 'is_active'),
+        Index('idx_timebox_phase', 'repo_id', 'phase'),
+    )
+
 # Create all tables
 def create_tables():
+    """Create all tables and run migrations"""
     Base.metadata.create_all(bind=engine)
+    
+    # Run migrations after creating tables
+    try:
+        from .migrations import run_migrations
+        run_migrations()
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Error running migrations: {e}")
 
 # Dependency to get DB session
 def get_db():
