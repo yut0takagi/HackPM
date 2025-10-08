@@ -6,3 +6,4 @@ hack-pm/frontend/node_modules
 .kiro/*
 *.db
 test_reports/*
+__pycache__/
