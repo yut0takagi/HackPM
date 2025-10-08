@@ -6,9 +6,9 @@ const Navbar: React.FC = () => {
   const location = useLocation();
 
   const navItems = [
-    { path: '/', label: 'ダッシュボード', icon: '📊' },
-    { path: '/features', label: '機能一覧', icon: '📋' },
-    { path: '/gantt', label: 'ガントチャート', icon: '📅' },
+    { path: '/', label: 'ダッシュボード', icon: '🏠' },
+    { path: '/features', label: 'タスク管理', icon: '📋' },
+    { path: '/gantt', label: 'プロジェクト計画', icon: '📅' },
     { path: '/team', label: 'チーム', icon: '👥' },
   ];
 
@@ -26,15 +26,37 @@ const Navbar: React.FC = () => {
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '5rem' }}>
           {/* Logo */}
-          <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
-            <span style={{ 
-              fontSize: '1.75rem', 
-              fontWeight: '700', 
-              color: '#ffffff',
-              letterSpacing: '-0.02em'
+          <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div style={{
+              width: '2.5rem',
+              height: '2.5rem',
+              background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+              borderRadius: '0.75rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '1.25rem'
             }}>
-              Hack PM
-            </span>
+              🚀
+            </div>
+            <div>
+              <div style={{ 
+                fontSize: '1.5rem', 
+                fontWeight: '700', 
+                color: '#ffffff',
+                letterSpacing: '-0.02em',
+                lineHeight: '1'
+              }}>
+                Keel Project
+              </div>
+              <div style={{
+                fontSize: '0.75rem',
+                color: '#a1a1aa',
+                fontWeight: '500'
+              }}>
+                Hackathon Dashboard
+              </div>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
@@ -74,6 +96,38 @@ const Navbar: React.FC = () => {
                 <span>{item.label}</span>
               </Link>
             ))}
+            
+            {/* GitHub Link */}
+            <a
+              href="https://github.com/yut0takagi/Keel"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                textDecoration: 'none',
+                padding: '0.75rem',
+                borderRadius: '1.5rem',
+                display: 'flex',
+                alignItems: 'center',
+                fontSize: '1.25rem',
+                transition: 'all 0.3s ease',
+                background: 'transparent',
+                color: '#a1a1aa',
+                marginLeft: '0.5rem'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                e.currentTarget.style.color = '#ffffff';
+                e.currentTarget.style.transform = 'scale(1.1)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = '#a1a1aa';
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
+              title="GitHub Repository"
+            >
+              📁
+            </a>
           </div>
 
           {/* Mobile menu button */}

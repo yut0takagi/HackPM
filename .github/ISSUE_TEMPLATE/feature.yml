@@ -1,0 +1,98 @@
+name: 🚀 Feature Request
+description: Create a new feature for the hackathon project
+title: "[FEATURE] "
+labels: ["enhancement", "feature"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to create a feature request! Please fill out the information below to help us understand what you'd like to build.
+
+  - type: textarea
+    id: user-story
+    attributes:
+      label: User Story
+      description: Describe the feature from the user's perspective
+      placeholder: "As a [type of user], I want [goal] so that [benefit]"
+    validations:
+      required: true
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Feature Description
+      description: Provide a detailed description of the feature
+      placeholder: Describe what this feature should do and how it should work
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: List the specific requirements that must be met for this feature to be considered complete
+      placeholder: |
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+        - [ ] Criterion 3
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical-requirements
+    attributes:
+      label: Technical Requirements
+      description: Specify any technical constraints, dependencies, or implementation details
+      placeholder: |
+        - API endpoints needed
+        - Database changes required
+        - Frontend components to create/modify
+        - Third-party integrations
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this feature for the hackathon?
+      options:
+        - Critical (Must have for demo)
+        - High (Important for user experience)
+        - Medium (Nice to have)
+        - Low (Future enhancement)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: estimated-time
+    attributes:
+      label: Estimated Development Time
+      description: How long do you think this will take to implement?
+      options:
+        - 1-2 hours
+        - 3-4 hours
+        - 5-8 hours
+        - 1 day
+        - 2+ days
+    validations:
+      required: true
+
+  - type: input
+    id: branch-name
+    attributes:
+      label: Suggested Branch Name
+      description: Suggested branch name following convention (will be auto-generated if left empty)
+      placeholder: "feature/123-short-description"
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context, mockups, or references that might be helpful
+      placeholder: Links to designs, similar features, or relevant documentation
+    validations:
+      required: false

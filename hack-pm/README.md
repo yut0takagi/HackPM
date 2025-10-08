@@ -57,27 +57,29 @@ DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/your/webhook/url
 
 ### 3. 起動
 
-**プロダクション環境:**
+**簡単スタート（推奨）:**
 ```bash
-# Docker Composeで起動
-docker compose up -d
+# プロダクション環境
+./start-docker.sh
 
-# ログを確認
-docker compose logs -f
+# 開発環境（ホットリロード付き）
+./start-dev-docker.sh
 ```
 
-**開発環境:**
+**手動起動:**
 ```bash
-# 簡単スタート（推奨）
-./start-dev.sh
+# プロダクション環境
+docker-compose up --build -d
 
-# または、Docker Composeで開発環境起動
-docker compose -f docker-compose.dev.yml up -d
+# 開発環境
+docker-compose -f docker-compose.dev.yml up --build
 
-# または、手動でローカル開発
+# ローカル開発（Dockerなし）
 cd backend-python
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
-uvicorn main:app --reload --port 9000 &
+python3 start_server.py &
 
 cd ../frontend
 npm install
@@ -87,8 +89,9 @@ npm run dev
 ### 4. アクセス
 
 - **フロントエンド**: http://localhost:5173
-- **API**: http://localhost:9000
-- **API ドキュメント**: http://localhost:9000/docs
+- **Backend API**: http://localhost:8000
+- **API ドキュメント**: http://localhost:8000/docs
+- **ヘルスチェック**: http://localhost:8000/health
 
 ## 📱 機能
 

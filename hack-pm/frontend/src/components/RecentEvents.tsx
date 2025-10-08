@@ -114,16 +114,55 @@ const RecentEvents: React.FC = () => {
         marginBottom: '2rem',
         textAlign: 'center'
       }}>
-        Recent Activity
+        📈 開発アクティビティ
       </h2>
       
       {events.length === 0 ? (
         <div style={{ 
           textAlign: 'center',
           color: '#a1a1aa',
-          padding: '3rem'
+          padding: '3rem',
+          background: 'rgba(255, 255, 255, 0.05)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '1rem',
+          border: '1px solid rgba(255, 255, 255, 0.1)'
         }}>
-          <p>No recent events found. Set up webhooks to start seeing activity.</p>
+          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🚀</div>
+          <h3 style={{ color: '#ffffff', marginBottom: '1rem' }}>
+            開発を開始しましょう！
+          </h3>
+          <p>GitHubでコミット、PR、Issueの作成を行うと、ここにアクティビティが表示されます。</p>
+          <div style={{ marginTop: '1.5rem' }}>
+            <a
+              href="https://github.com/yut0takagi/Keel/issues/new"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.75rem 1.5rem',
+                background: 'rgba(59, 130, 246, 0.1)',
+                border: '1px solid rgba(59, 130, 246, 0.3)',
+                borderRadius: '0.75rem',
+                color: '#3b82f6',
+                textDecoration: 'none',
+                fontSize: '0.95rem',
+                fontWeight: '500',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(59, 130, 246, 0.15)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(59, 130, 246, 0.1)';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
+              ➕ 新しいIssueを作成
+            </a>
+          </div>
         </div>
       ) : (
         <div style={{

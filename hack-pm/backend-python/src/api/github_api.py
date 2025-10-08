@@ -7,7 +7,10 @@ import logging
 from datetime import datetime, timedelta
 from typing import Dict, Any, List, Optional
 from sqlalchemy.orm import Session
-from database import get_db, Repository, Branch, PullRequest, Issue, CIRun
+from ..services.database import get_db, Repository, Branch, PullRequest, Issue, CIRun
+from ..core.template_parser import template_parser
+from ..core.status_mapping import status_mapping_service
+from ..core.branch_naming import branch_naming_service
 import httpx
 
 logger = logging.getLogger(__name__)
@@ -92,6 +95,13 @@ class GitHubAPIClient:
             await self.sync_pull_requests(client, db, repo, repo_full_name)
             await self.sync_issues(client, db, repo, repo_full_name)
             await self.sync_workflow_runs(client, db, repo, repo_full_name)
+            
+            # Link branches to issues based on naming conventions
+            try:
+                branch_links = branch_naming_service.link_branches_to_issues(db, repo.id)
+                logger.info(f"Created {len(branch_links)} branch-issue links for {repo_full_name}")
+            except Exception as e:
+                logger.error(f"Failed to link branches to issues for {repo_full_name}: {e}")
     
     async def sync_branches(self, client: httpx.AsyncClient, db: Session, repo: Repository, repo_full_name: str):
         """Sync repository branches"""
@@ -214,6 +224,39 @@ class GitHubAPIClient:
                     Issue.number == issue_data.get("number")
                 ).first()
                 
+                # Parse template data from issue body
+                labels = [label.get("name") for label in issue_data.get("labels", [])]
+                template_data = template_parser.parse_issue_body(issue_data.get("body", ""), labels)
+                
+                # Map to dashboard data
+                dashboard_data = status_mapping_service.map_issue_to_dashboard(
+                    template_data,
+                    labels=labels,
+                    assignees=[assignee.get("login") for assignee in issue_data.get("assignees", [])],
+                    issue_state=issue_data.get("state", "open")
+                )
+                
+                # Store template and dashboard data as JSON
+                template_json = json.dumps({
+                    "template_type": template_data.template_type.value,
+                    "priority": template_data.priority.value,
+                    "estimated_time": template_data.estimated_time,
+                    "acceptance_criteria": template_data.acceptance_criteria,
+                    "technical_requirements": template_data.technical_requirements,
+                    "branch_suggestion": template_data.branch_suggestion,
+                    "user_story": template_data.user_story
+                })
+                
+                dashboard_json = json.dumps({
+                    "status": dashboard_data.status.value,
+                    "category": dashboard_data.category.value,
+                    "priority": dashboard_data.priority.value,
+                    "progress_percentage": dashboard_data.progress_percentage,
+                    "estimated_hours": dashboard_data.estimated_hours,
+                    "acceptance_criteria_total": dashboard_data.acceptance_criteria_total,
+                    "acceptance_criteria_completed": dashboard_data.acceptance_criteria_completed
+                })
+
                 if not issue:
                     issue = Issue(
                         repo_id=repo.id,
@@ -223,21 +266,31 @@ class GitHubAPIClient:
                         author=issue_data.get("user", {}).get("login", ""),
                         author_avatar=issue_data.get("user", {}).get("avatar_url", ""),
                         state=issue_data.get("state", "open"),
-                        labels_json=json.dumps([label.get("name") for label in issue_data.get("labels", [])]),
+                        labels_json=json.dumps(labels),
                         assignees_json=json.dumps([assignee.get("login") for assignee in issue_data.get("assignees", [])]),
                         milestone=issue_data.get("milestone", {}).get("title") if issue_data.get("milestone") else None,
                         html_url=issue_data.get("html_url", ""),
                         created_at=self._parse_datetime(issue_data.get("created_at")) or datetime.utcnow(),
                         updated_at=datetime.utcnow()
                     )
+                    # Add template data fields if they don't exist in the model
+                    if hasattr(issue, 'template_data_json'):
+                        issue.template_data_json = template_json
+                    if hasattr(issue, 'dashboard_data_json'):
+                        issue.dashboard_data_json = dashboard_json
                     db.add(issue)
                 else:
                     issue.title = issue_data.get("title", issue.title)
                     issue.body = issue_data.get("body", issue.body)
                     issue.state = issue_data.get("state", issue.state)
-                    issue.labels_json = json.dumps([label.get("name") for label in issue_data.get("labels", [])])
+                    issue.labels_json = json.dumps(labels)
                     issue.assignees_json = json.dumps([assignee.get("login") for assignee in issue_data.get("assignees", [])])
                     issue.milestone = issue_data.get("milestone", {}).get("title") if issue_data.get("milestone") else issue.milestone
+                    # Update template data fields if they exist in the model
+                    if hasattr(issue, 'template_data_json'):
+                        issue.template_data_json = template_json
+                    if hasattr(issue, 'dashboard_data_json'):
+                        issue.dashboard_data_json = dashboard_json
                     issue.updated_at = datetime.utcnow()
         
         except Exception as e:

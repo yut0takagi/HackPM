@@ -10,7 +10,7 @@ from datetime import datetime
 from typing import Dict, Any, Optional, List
 from fastapi import HTTPException, Request, Depends
 from sqlalchemy.orm import Session
-from database import get_db, Repository, Branch, PullRequest, Issue, CIRun, Event
+from ..services.database import get_db, Repository, Branch, PullRequest, Issue, CIRun, Event
 import httpx
 
 logger = logging.getLogger(__name__)
