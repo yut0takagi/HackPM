@@ -55,6 +55,10 @@ ALLOWED_REPOS=owner1/repo1,owner2/repo2
 DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/your/webhook/url
 ```
 
+**📖 ドキュメント:**
+- [Webhook セットアップガイド](docs/WEBHOOK_SETUP.md) - 詳細な設定手順
+- [Webhook クイックリファレンス](docs/WEBHOOK_QUICK_REFERENCE.md) - コマンド早見表
+
 ### 3. 起動
 
 **簡単スタート（推奨）:**
@@ -187,6 +191,22 @@ go run main.go
 cd backend-python
 pip install -r requirements.txt
 uvicorn main:app --reload
+```
+
+### テスト
+
+Pythonバックエンドのテストを実行：
+
+```bash
+cd backend-python
+pip install -r requirements.txt
+pytest tests/ -v
+```
+
+Webhook関連のテストのみ実行：
+
+```bash
+pytest tests/test_github_webhook.py -v
 ```
 
 ### データベース
